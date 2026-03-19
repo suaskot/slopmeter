@@ -79,6 +79,25 @@ interface SurfacePalette {
 }
 
 export const heatmapThemes: Record<HeatmapThemeId, HeatmapTheme> = {
+  antigravity: {
+    title: "Antigravity",
+    colors: {
+      light: [
+        "#f0fdfa", // teal-50
+        "#99f6e4", // teal-200
+        "#5eead4", // teal-300
+        "#14b8a6", // teal-500
+        "#0f766e", // teal-700
+      ],
+      dark: [
+        "#042f2e", // teal-950
+        "#115e59", // teal-800
+        "#0d9488", // teal-600
+        "#2dd4bf", // teal-400
+        "#99f6e4", // teal-200
+      ],
+    },
+  },
   amp: {
     title: "Amp",
     colors: {
@@ -214,7 +233,7 @@ export const heatmapThemes: Record<HeatmapThemeId, HeatmapTheme> = {
   },
   all: {
     title:
-      "Amp / Claude Code / Codex / Cursor / Gemini CLI / Open Code / Pi Coding Agent",
+      "Antigravity / Amp / Claude Code / Codex / Cursor / Gemini CLI / Open Code / Pi Coding Agent",
     titleCaption: "Total usage from",
     colors: {
       light: [
@@ -653,7 +672,9 @@ function drawHeatmapSection(
         monthLabel,
       );
     }
+  }
 
+  for (let weekIndex = 0; weekIndex < grid.weeks.length; weekIndex += 1) {
     const week = grid.weeks[weekIndex];
 
     for (let dayIndex = 0; dayIndex < week.length; dayIndex += 1) {

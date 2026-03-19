@@ -30,6 +30,7 @@ interface CliArgValues {
   help: boolean;
   dark: boolean;
   all: boolean;
+  antigravity: boolean;
   amp: boolean;
   claude: boolean;
   codex: boolean;
@@ -49,10 +50,11 @@ const HELP_TEXT = `slopmeter
 Generate rolling 1-year usage heatmap image(s) (today is the latest day).
 
 Usage:
-  slopmeter [--all] [--amp] [--claude] [--codex] [--cursor] [--gemini] [--opencode] [--pi] [--dark] [--format png|svg|json] [--output ./heatmap-last-year.png]
+  slopmeter [--all] [--antigravity] [--amp] [--claude] [--codex] [--cursor] [--gemini] [--opencode] [--pi] [--dark] [--format png|svg|json] [--output ./heatmap-last-year.png]
 
 Options:
   --all                       Render one merged graph for all providers
+  --antigravity               Render Antigravity graph
   --amp                       Render Amp graph
   --claude                    Render Claude Code graph
   --codex                     Render Codex graph
@@ -79,6 +81,7 @@ function validateArgs(values: unknown): asserts values is CliArgValues {
       help: ow.boolean,
       dark: ow.boolean,
       all: ow.boolean,
+      antigravity: ow.boolean,
       amp: ow.boolean,
       claude: ow.boolean,
       codex: ow.boolean,
@@ -185,7 +188,7 @@ function getRequestedProviders(values: CliArgValues) {
 }
 
 function getMergedNoDataMessage() {
-  return "No usage data found for Amp, Claude Code, Codex, Cursor, Gemini CLI, Open Code, or Pi Coding Agent.";
+  return "No usage data found for Antigravity, Amp, Claude Code, Codex, Cursor, Gemini CLI, Open Code, or Pi Coding Agent.";
 }
 
 function getRequestedMissingProvidersMessage(missing: ProviderId[]) {
@@ -326,6 +329,7 @@ async function main() {
       help: { type: "boolean", short: "h", default: false },
       dark: { type: "boolean", default: false },
       all: { type: "boolean", default: false },
+      antigravity: { type: "boolean", default: false },
       amp: { type: "boolean", default: false },
       claude: { type: "boolean", default: false },
       codex: { type: "boolean", default: false },

@@ -1,4 +1,5 @@
 export type ProviderId =
+  | "antigravity"
   | "amp"
   | "claude"
   | "codex"
@@ -8,6 +9,7 @@ export type ProviderId =
   | "pi";
 
 export const providerIds: ProviderId[] = [
+  "antigravity",
   "amp",
   "claude",
   "codex",
@@ -20,6 +22,7 @@ export const providerIds: ProviderId[] = [
 export const defaultProviderIds: ProviderId[] = ["claude", "codex", "cursor"];
 
 export const providerStatusLabel: Record<ProviderId, string> = {
+  antigravity: "Antigravity",
   amp: "Amp",
   claude: "Claude code",
   codex: "Codex",

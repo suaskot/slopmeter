@@ -1,4 +1,5 @@
 import type { UsageSummary } from "./interfaces";
+import { isAntigravityAvailable, loadAntigravityRows } from "./lib/antigravity";
 import { isAmpAvailable, loadAmpRows } from "./lib/amp";
 import { isClaudeAvailable, loadClaudeRows } from "./lib/claude-code";
 import { isCodexAvailable, loadCodexRows } from "./lib/codex";
@@ -31,6 +32,7 @@ export type ProviderAvailability = Record<ProviderId, boolean>;
 
 function createEmptyProviderAvailability(): ProviderAvailability {
   return {
+    antigravity: false,
     amp: false,
     claude: false,
     codex: false,
@@ -43,6 +45,8 @@ function createEmptyProviderAvailability(): ProviderAvailability {
 
 export async function isProviderAvailable(provider: ProviderId): Promise<boolean> {
   switch (provider) {
+    case "antigravity":
+      return isAntigravityAvailable();
     case "amp":
       return isAmpAvailable();
     case "claude":
@@ -101,6 +105,7 @@ export async function aggregateUsage({
     ? requestedProviders
     : providerIds;
   const rowsByProvider: Record<ProviderId, UsageSummary | null> = {
+    antigravity: null,
     amp: null,
     claude: null,
     codex: null,
@@ -115,6 +120,9 @@ export async function aggregateUsage({
     let summary: UsageSummary;
 
     switch (provider) {
+      case "antigravity":
+        summary = await loadAntigravityRows(start, end);
+        break;
       case "amp":
         summary = await loadAmpRows(start, end);
         break;
