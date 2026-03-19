@@ -4,6 +4,7 @@ type OutputFormat = "png" | "svg" | "json";
 
 interface ProviderSelectionValues {
   all: boolean;
+  antigravity: boolean;
   amp: boolean;
   claude: boolean;
   codex: boolean;
@@ -14,6 +15,7 @@ interface ProviderSelectionValues {
 }
 
 const outputProviderIds: ProviderId[] = [
+  "antigravity",
   "amp",
   "claude",
   "codex",

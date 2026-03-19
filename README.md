@@ -1,6 +1,6 @@
 # slopmeter
 
-CLI tool that generates usage heatmaps for Claude Code, Codex, Cursor, Gemini CLI, Open Code, and Pi Coding Agent for the rolling past year (ending today).
+CLI tool that generates usage heatmaps for Antigravity, Claude Code, Codex, Cursor, Gemini CLI, Open Code, and Pi Coding Agent for the rolling past year (ending today).
 
 ## Monorepo layout
 
@@ -59,6 +59,7 @@ slopmeter --all
 slopmeter --claude
 slopmeter --codex
 slopmeter --cursor
+slopmeter --antigravity
 slopmeter --gemini
 slopmeter --opencode
 slopmeter --pi
@@ -102,6 +103,7 @@ Model names are normalized to remove a trailing date suffix like `-20251101`.
 - If no provider flags are passed, the CLI renders all providers with available data.
 - If `--all` is passed, the CLI renders one merged graph across all providers with consolidated totals, streaks, and model rankings.
 - Pi Coding Agent usage is derived from assistant messages in Pi session logs, grouped by the model that handled each turn.
+- Antigravity usage is derived from local Antigravity language server trajectory RPCs plus trajectory IDs from local Antigravity unified state.
 - If provider flags are passed, `slopmeter` only loads those providers and only prints availability for those providers.
 - If no provider flags are passed, the CLI loads all providers and prints availability for all providers.
 - If explicit provider flags are passed and any requested provider has no data, the command exits with an error.
@@ -109,6 +111,14 @@ Model names are normalized to remove a trailing date suffix like `-20251101`.
 
 ## Environment knobs
 
+- `ANTIGRAVITY_CONFIG_DIR`: override the Antigravity config root used for log discovery.
+- `ANTIGRAVITY_LOG_PATH`: override Antigravity log discovery with an explicit `Antigravity.log` file path.
+- `ANTIGRAVITY_LS_PID`: force a language server PID for RPC discovery.
+- `ANTIGRAVITY_LS_HTTP_PORT`: force the Antigravity LS HTTP port.
+- `ANTIGRAVITY_LS_CSRF_TOKEN`: force the Antigravity LS CSRF token.
+- `ANTIGRAVITY_STATE_DB_PATH`: override Antigravity unified-state DB discovery with an explicit `state.vscdb` path.
+- `ANTIGRAVITY_MAX_TRAJECTORIES`: cap the number of cascades scanned per run. Default: `200`.
+- `ANTIGRAVITY_MAX_STEP_PAGES`: cap per-cascade step page fetches (20-step page size). Default: `100`.
 - `SLOPMETER_FILE_PROCESS_CONCURRENCY`: positive integer file-processing limit for Claude Code and Codex JSONL files. Default: `16`.
 - `SLOPMETER_MAX_JSONL_RECORD_BYTES`: byte cap for Claude Code and Codex JSONL records, OpenCode JSON documents, and OpenCode SQLite `message.data` payloads. Default: `67108864` (`64 MB`).
 
@@ -128,6 +138,7 @@ Model names are normalized to remove a trailing date suffix like `-20251101`.
 
 - Claude Code: `$CLAUDE_CONFIG_DIR/*/projects` (comma-separated dirs) or defaults `~/.config/claude/projects` and `~/.claude/projects`
 - Codex: `$CODEX_HOME/sessions` or `~/.codex/sessions`
+- Antigravity: discovers local Antigravity language server metadata from `%APPDATA%/Antigravity/logs/**/Antigravity.log` (Windows), `~/Library/Application Support/Antigravity/logs/**/Antigravity.log` (macOS), or `~/.config/Antigravity/logs/**/Antigravity.log` (Linux), then reads usage from local LS protobuf RPC endpoints
 - Cursor: reads `cursorAuth/accessToken` and `cursorAuth/refreshToken` from `$CURSOR_STATE_DB_PATH`, `$CURSOR_CONFIG_DIR/User/globalStorage/state.vscdb`, `~/Library/Application Support/Cursor/User/globalStorage/state.vscdb` (macOS), `%APPDATA%/Cursor/User/globalStorage/state.vscdb` (Windows), or `~/.config/Cursor/User/globalStorage/state.vscdb` (Linux), then loads usage from Cursor's CSV export endpoint
 - Gemini CLI: `$GEMINI_CONFIG_DIR/tmp/**/chats/session-*.json` or `~/.gemini/tmp/**/chats/session-*.json`
 - Open Code: prefers `$OPENCODE_DATA_DIR/opencode.db` or `~/.local/share/opencode/opencode.db`, and falls back to `$OPENCODE_DATA_DIR/storage/message` or `~/.local/share/opencode/storage/message`

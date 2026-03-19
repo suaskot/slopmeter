@@ -3,10 +3,11 @@ import test from "node:test";
 import {
   getDefaultOutputPath,
   getDefaultOutputSuffix,
-} from "../src/output-path.ts";
+} from "../src/output-path";
 
 function createValues(overrides?: Partial<{
   all: boolean;
+  antigravity: boolean;
   amp: boolean;
   claude: boolean;
   codex: boolean;
@@ -17,6 +18,7 @@ function createValues(overrides?: Partial<{
 }>) {
   return {
     all: false,
+    antigravity: false,
     amp: false,
     claude: false,
     codex: false,
@@ -56,6 +58,13 @@ test("default output path reflects multiple explicit provider flags", () => {
       "svg",
     ),
     "./heatmap-last-year_codex_cursor_pi.svg",
+  );
+});
+
+test("default output path adds _antigravity for --antigravity", () => {
+  assert.equal(
+    getDefaultOutputPath(createValues({ antigravity: true }), "png"),
+    "./heatmap-last-year_antigravity.png",
   );
 });
 
